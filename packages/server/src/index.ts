@@ -5,7 +5,8 @@ import { z } from "zod";
 import { buildMockResearch } from "./mock-data.js";
 
 const WEB_APP_URL =
-  process.env.SCREENOS_WEB_URL ?? "https://screenos-web-9138.vercel.app/";
+  process.env.SCREENOS_WEB_URL ??
+  "https://screenos-web-9138-ezbxs77bs-adarsh-raj-s-projects2.vercel.app/";
 const WEB_APP_ORIGIN = new URL(WEB_APP_URL).origin;
 const PORT = Number(process.env.PORT ?? "8787");
 
@@ -23,13 +24,13 @@ function createScreenOsServer() {
     {
       title: "ScreenOS Research",
       description: "Iframe wrapper for the ScreenOS research dashboard",
-      mimeType: "text/html"
+      mimeType: "text/html+skybridge"
     },
     async () => ({
       contents: [
         {
           uri: DASHBOARD_RESOURCE_URI,
-          mimeType: "text/html",
+          mimeType: "text/html+skybridge",
           text: `<!doctype html>
 <html lang="en">
   <head>
@@ -77,7 +78,14 @@ function createScreenOsServer() {
     {
       title: "Open ScreenOS research dashboard",
       description: "Opens the ScreenOS research dashboard",
-      inputSchema: {}
+      inputSchema: {},
+      _meta: {
+        // Apps SDK renders the component when this metadata is present on the
+        // tool descriptor and points at a readable text/html+skybridge resource.
+        "openai/outputTemplate": DASHBOARD_RESOURCE_URI,
+        "openai/toolInvocation/invoking": "Opening ScreenOS Research",
+        "openai/toolInvocation/invoked": "Opened ScreenOS Research"
+      }
     },
     async () => ({
       content: [
@@ -89,7 +97,7 @@ function createScreenOsServer() {
       structuredContent: {
         resource: {
           uri: DASHBOARD_RESOURCE_URI,
-          mimeType: "text/html",
+          mimeType: "text/html+skybridge",
           title: "ScreenOS Research",
           url: WEB_APP_URL
         }
@@ -111,6 +119,12 @@ function createScreenOsServer() {
         topic: z.string().min(2),
         depth: z.enum(["fast", "standard", "deep"]),
         sourceType: z.enum(["mixed", "news", "reports", "interviews"])
+      },
+      _meta: {
+        // The research result hydrates the same dashboard component in ChatGPT.
+        "openai/outputTemplate": DASHBOARD_RESOURCE_URI,
+        "openai/toolInvocation/invoking": "Running ScreenOS research",
+        "openai/toolInvocation/invoked": "ScreenOS research complete"
       }
     },
     async ({ topic, depth, sourceType }) => {

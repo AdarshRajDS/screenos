@@ -18,7 +18,7 @@ COPY . .
 RUN pnpm build
 
 ENV PORT=8787
-ENV SCREENOS_WEB_URL=https://screenos-web-9138.vercel.app/
+ENV SCREENOS_WEB_URL=https://screenos-web-9138-ezbxs77bs-adarsh-raj-s-projects2.vercel.app/
 
 EXPOSE 8787
 

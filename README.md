@@ -39,7 +39,7 @@ pnpm.cmd dev:server
 5. Optional: point the server at a different hosted dashboard URL:
 
 ```bash
-$env:SCREENOS_WEB_URL="https://screenos-web-9138.vercel.app/"; pnpm.cmd dev:server
+$env:SCREENOS_WEB_URL="https://screenos-web-9138-ezbxs77bs-adarsh-raj-s-projects2.vercel.app/"; pnpm.cmd dev:server
 ```
 
 ## Deploying the dashboard to Vercel
@@ -74,14 +74,14 @@ Required environment variables:
 
 ```bash
 PORT=8787
-SCREENOS_WEB_URL=https://screenos-web-9138.vercel.app/
+SCREENOS_WEB_URL=https://screenos-web-9138-ezbxs77bs-adarsh-raj-s-projects2.vercel.app/
 ```
 
 For local Windows PowerShell use:
 
 ```powershell
 $env:PORT="8787"
-$env:SCREENOS_WEB_URL="https://screenos-web-9138.vercel.app/"
+$env:SCREENOS_WEB_URL="https://screenos-web-9138-ezbxs77bs-adarsh-raj-s-projects2.vercel.app/"
 pnpm.cmd dev:server
 ```
 
