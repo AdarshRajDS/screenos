@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "pnpm run vercel-build",
+  "buildCommand": "pnpm --filter @screenos/web build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "pnpm install",
   "rewrites": [
