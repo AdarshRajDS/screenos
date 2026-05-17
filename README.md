@@ -1,12 +1,12 @@
 # ScreenOS
 
-ScreenOS is a demo OpenAI Apps SDK + MCP project that opens an embedded research dashboard inside ChatGPT when a user triggers `/screen research`.
+ScreenOS is a demo OpenAI Apps SDK + remote MCP project that opens an embedded research dashboard inside ChatGPT when a user triggers `/screen research`.
 
 ## Stack
 
 - `pnpm` monorepo
 - `React + Vite + TypeScript + Tailwind` frontend
-- `Node.js + TypeScript` MCP server
+- `Node.js + TypeScript` remote MCP server
 - iframe-compatible Apps SDK style UI resource metadata
 
 ## Workspace layout
@@ -19,25 +19,27 @@ ScreenOS is a demo OpenAI Apps SDK + MCP project that opens an embedded research
 1. Install dependencies:
 
 ```bash
-pnpm install
+pnpm.cmd install
 ```
 
 2. Start the dashboard app:
 
 ```bash
-pnpm dev:web
+pnpm.cmd dev:web
 ```
 
 3. Start the MCP server in another terminal:
 
 ```bash
-pnpm dev:server
+pnpm.cmd dev:server
 ```
 
-4. Optional: point the server at a different hosted dashboard URL:
+4. The remote MCP server starts on `http://localhost:8787/mcp`.
+
+5. Optional: point the server at a different hosted dashboard URL:
 
 ```bash
-SCREENOS_WEB_URL=http://localhost:4173 pnpm dev:server
+$env:SCREENOS_WEB_URL="https://screenos-web-9138.vercel.app/"; pnpm.cmd dev:server
 ```
 
 ## Deploying the dashboard to Vercel
@@ -61,6 +63,34 @@ SCREENOS_WEB_URL=https://your-vercel-project.vercel.app
 ```
 
 Note: this Vercel setup publishes the dashboard UI. ChatGPT app embedding still requires the MCP server to be reachable remotely over HTTP, not local stdio.
+
+## Deploying the MCP server
+
+The frontend is already suitable for Vercel. The MCP server should be deployed as a public Node service on a platform such as Railway, Render, Fly.io, or another host that supports long-running HTTP services.
+
+A Docker image is included in [Dockerfile](/C:/Users/Admin/Documents/gptApps/ScreenAp/Dockerfile:1) for hosts that deploy from containers.
+
+Required environment variables:
+
+```bash
+PORT=8787
+SCREENOS_WEB_URL=https://screenos-web-9138.vercel.app/
+```
+
+For local Windows PowerShell use:
+
+```powershell
+$env:PORT="8787"
+$env:SCREENOS_WEB_URL="https://screenos-web-9138.vercel.app/"
+pnpm.cmd dev:server
+```
+
+Important URLs after deploy:
+
+- MCP endpoint: `https://your-server-domain.com/mcp`
+- Health check: `https://your-server-domain.com/health`
+
+In ChatGPT Developer mode, connect the remote MCP server using the deployed `/mcp` URL.
 
 ## Scripts
 
