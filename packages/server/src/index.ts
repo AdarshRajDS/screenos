@@ -367,27 +367,43 @@ function createScreenOsServer() {
         "openai/toolInvocation/invoked": "Opened ScreenOS Research"
       }
     },
-    async () => ({
-      content: [
-        {
-          type: "text",
-          text: "Opening the ScreenOS research dashboard."
+    async () => {
+      const initialResearch = buildMockResearch({
+        topic: "AI workflow tools for mid-market sales teams",
+        depth: "deep",
+        sourceType: "mixed"
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Opening the ScreenOS research dashboard."
+          }
+        ],
+        structuredContent: {
+          resource: {
+            uri: DASHBOARD_RESOURCE_URI,
+            mimeType: "text/html+skybridge",
+            title: "ScreenOS Research",
+            url: WEB_APP_URL
+          },
+          research: initialResearch
+        },
+        _meta: {
+          // Apps SDK UI metadata belongs on _meta so ChatGPT knows this tool returns
+          // an embeddable component resource for the iframe-based dashboard pattern.
+          "openai/outputTemplate": DASHBOARD_RESOURCE_URI,
+          research: initialResearch,
+          resource: {
+            uri: DASHBOARD_RESOURCE_URI,
+            mimeType: "text/html+skybridge",
+            title: "ScreenOS Research",
+            url: WEB_APP_URL
+          }
         }
-      ],
-      structuredContent: {
-        resource: {
-          uri: DASHBOARD_RESOURCE_URI,
-          mimeType: "text/html+skybridge",
-          title: "ScreenOS Research",
-          url: WEB_APP_URL
-        }
-      },
-      _meta: {
-        // Apps SDK UI metadata belongs on _meta so ChatGPT knows this tool returns
-        // an embeddable component resource for the iframe-based dashboard pattern.
-        "openai/outputTemplate": DASHBOARD_RESOURCE_URI
-      }
-    })
+      };
+    }
   );
 
   server.registerTool(
