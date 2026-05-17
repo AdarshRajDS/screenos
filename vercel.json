@@ -3,6 +3,17 @@
   "buildCommand": "pnpm --filter @screenos/web build",
   "outputDirectory": "apps/web/dist",
   "installCommand": "pnpm install",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors https://chatgpt.com https://chat.openai.com;"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
