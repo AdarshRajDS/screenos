@@ -62,9 +62,10 @@ function createScreenOsServer() {
             // Apps SDK component metadata is attached to the resource so ChatGPT
             // treats this HTML document as the iframe-rendered dashboard template.
             "openai/widgetDescription": "ScreenOS research dashboard",
+            "openai/widgetDomain": WEB_APP_ORIGIN,
             "openai/widgetPrefersBorder": true,
             "openai/widgetCSP": {
-              connect_domains: [],
+              connect_domains: [WEB_APP_ORIGIN],
               resource_domains: [WEB_APP_ORIGIN]
             }
           }
