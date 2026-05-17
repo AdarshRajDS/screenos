@@ -38,24 +38,303 @@ function createScreenOsServer() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ScreenOS Research</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
       html, body {
         margin: 0;
-        height: 100%;
-        background: #eef5fb;
+        min-height: 100%;
+        color: #08111f;
+        background:
+          radial-gradient(circle at top left, rgba(125, 211, 252, 0.42), transparent 32%),
+          radial-gradient(circle at top right, rgba(184, 243, 75, 0.28), transparent 26%),
+          linear-gradient(180deg, #f8fbff 0%, #eef5fb 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
-      iframe {
-        border: 0;
+      body {
+        padding: 20px;
+      }
+      .screen {
+        max-width: 1180px;
+        margin: 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: 0 20px 60px rgba(8, 17, 31, 0.16);
+        overflow: hidden;
+      }
+      .inner {
+        padding: 28px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        border-bottom: 1px solid #dbe3ed;
+        padding-bottom: 22px;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        color: #0f766e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.05;
+      }
+      .lede {
+        margin: 12px 0 0;
+        max-width: 700px;
+        color: #536174;
+        line-height: 1.6;
+      }
+      .command {
+        align-self: flex-start;
+        min-width: 150px;
+        border-radius: 18px;
+        background: #08111f;
+        color: white;
+        padding: 14px 16px;
+      }
+      .command small {
+        color: #7dd3fc;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .command p {
+        margin: 8px 0 0;
+        font-weight: 700;
+      }
+      .controls {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr) minmax(150px, 1fr) auto;
+        gap: 12px;
+        align-items: end;
+        border-radius: 18px;
+        background: #08111f;
+        padding: 18px;
+        color: white;
+      }
+      label {
+        display: grid;
+        gap: 8px;
+        color: #cbd5e1;
+        font-size: 14px;
+      }
+      input, select {
         width: 100%;
-        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 12px;
+        font: inherit;
+      }
+      option {
+        color: #08111f;
+      }
+      button {
+        border: 0;
+        border-radius: 12px;
+        background: #b8f34b;
+        color: #08111f;
+        padding: 13px 16px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .kpis, .content {
+        display: grid;
+        gap: 14px;
+      }
+      .kpis {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+      .card, .panel {
+        border: 1px solid #dbe3ed;
+        border-radius: 16px;
+        background: white;
+        padding: 18px;
+      }
+      .card span, .panel span {
+        color: #64748b;
+        font-size: 13px;
+      }
+      .card strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 30px;
+      }
+      .content {
+        grid-template-columns: 1fr 1fr;
+        margin-top: 18px;
+      }
+      .list {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+      .source, .insight {
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 14px;
+      }
+      .source h3, .insight h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .source p, .insight p {
+        margin: 0;
+        color: #536174;
+        line-height: 1.5;
+      }
+      .dark {
+        background: #08111f;
+        color: white;
+      }
+      .dark .insight {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .dark .insight p {
+        color: #cbd5e1;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+        margin-top: 18px;
+        border: 1px solid #dbe3ed;
+        border-radius: 16px;
+        background: white;
+        padding: 16px 18px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .actions button {
+        background: #08111f;
+        color: white;
+        padding: 10px 12px;
+      }
+      @media (max-width: 860px) {
+        body {
+          padding: 10px;
+        }
+        .inner {
+          padding: 18px;
+        }
+        header, footer {
+          flex-direction: column;
+        }
+        .controls, .content, .kpis {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
-    <iframe
-      src="${WEB_APP_URL}"
-      title="ScreenOS Research Dashboard"
-      allow="clipboard-read; clipboard-write"
-    ></iframe>
+    <main class="screen">
+      <div class="inner">
+        <header>
+          <div>
+            <p class="eyebrow">ScreenOS Research</p>
+            <h1>Embedded research cockpit</h1>
+            <p class="lede">Run focused research inside ChatGPT, scan source signals, and move from messy inputs to decision-ready insight.</p>
+          </div>
+          <div class="command">
+            <small>Command</small>
+            <p>/screen research</p>
+          </div>
+        </header>
+
+        <section class="controls">
+          <label>Topic
+            <input value="AI workflow tools for mid-market sales teams" />
+          </label>
+          <label>Source type
+            <select>
+              <option>Mixed sources</option>
+              <option>News</option>
+              <option>Reports</option>
+              <option>Interviews</option>
+            </select>
+          </label>
+          <label>Depth
+            <select>
+              <option>Deep dive</option>
+              <option>Standard</option>
+              <option>Fast scan</option>
+            </select>
+          </label>
+          <button>Start Research</button>
+        </section>
+
+        <section class="kpis">
+          <article class="card"><span>Sources Reviewed</span><strong>24</strong></article>
+          <article class="card"><span>Signal Score</span><strong>91%</strong></article>
+          <article class="card"><span>Emerging Themes</span><strong>5</strong></article>
+          <article class="card"><span>Estimated Time</span><strong>7 min</strong></article>
+        </section>
+
+        <section class="content">
+          <article class="panel">
+            <span>Source Cards</span>
+            <div class="list">
+              <div class="source">
+                <h3>Market Pulse Weekly</h3>
+                <p>Recent funding shifts and buyer sentiment changes show budget protection for workflow-critical tools.</p>
+              </div>
+              <div class="source">
+                <h3>AI Operator Index</h3>
+                <p>Operators reward products that combine synthesis, traceability, and next-step actionability.</p>
+              </div>
+              <div class="source">
+                <h3>Founder Transcript Set</h3>
+                <p>Users want tighter handoff from insight to execution rather than generic summarization.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel dark">
+            <span>Insight Cards</span>
+            <div class="list">
+              <div class="insight">
+                <h3>Verticalized workflows are winning</h3>
+                <p>Specialized products remain easier for buyers to understand, trust, and expand.</p>
+              </div>
+              <div class="insight">
+                <h3>Trust features matter earlier</h3>
+                <p>Source attribution and clear limits show up before broad automation permissions.</p>
+              </div>
+              <div class="insight">
+                <h3>Speed alone is insufficient</h3>
+                <p>Time saved converts best when paired with reusable outputs and crisp recommendations.</p>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <footer>
+          <div>
+            <strong>Command Bar</strong>
+            <p class="lede">Ready for tool-backed actions and structured research results.</p>
+          </div>
+          <div class="actions">
+            <button>Save brief</button>
+            <button>Export sources</button>
+            <button>Share insight</button>
+          </div>
+        </footer>
+      </div>
+    </main>
   </body>
 </html>`,
           _meta: {
